@@ -1,0 +1,13 @@
+# Synthea
+tools/*.jar
+data/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Secrets
+.env
