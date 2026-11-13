@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 import psycopg
 from psycopg import sql
 
-from synthetic_ward.config import DATABASE_URL, HISTORY_CUTOFF
+from synthetic_ward.config import HISTORY_CUTOFF, database_url
 from synthetic_ward.load_history import CLINICAL_TABLES, parse_time, read_rows
 
 # when events share a timestamp, do births before admits and discharges before deaths
@@ -112,7 +112,7 @@ def run(speed, tick_seconds):
     end = times[-1]
     print(f"{len(events):,} events, last at {end:%Y-%m-%d %H:%M}")
 
-    with psycopg.connect(DATABASE_URL, autocommit=True) as con:
+    with psycopg.connect(database_url(), autocommit=True) as con:
         sim_time = load_sim_time(con)
         print(f"Resuming at {sim_time:%Y-%m-%d %H:%M}, speed {speed}x")
         step = timedelta(seconds=tick_seconds * speed)

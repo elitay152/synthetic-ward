@@ -10,7 +10,7 @@ from datetime import UTC, datetime
 import psycopg
 from psycopg import sql
 
-from synthetic_ward.config import DATABASE_URL, HISTORY_CUTOFF, SYNTHEA_CSV_DIR
+from synthetic_ward.config import HISTORY_CUTOFF, SYNTHEA_CSV_DIR, database_url
 
 REFERENCE_TABLES = ["organizations", "providers", "payers"]
 CLINICAL_TABLES = ["conditions", "medications", "observations", "procedures", "immunizations", "allergies"]
@@ -86,7 +86,7 @@ def copy_rows(cur, table, rows):
 def main():
     cutoff = HISTORY_CUTOFF
     print(f"Loading history before {cutoff.isoformat()}")
-    with psycopg.connect(DATABASE_URL) as con, con.cursor() as cur:
+    with psycopg.connect(database_url) as con, con.cursor() as cur:
         cur.execute(
             sql.SQL("TRUNCATE {} RESTART IDENTITY CASCADE").format(
                 sql.SQL(", ").join(sql.Identifier("ehr", t) for t in ALL_TABLES)
