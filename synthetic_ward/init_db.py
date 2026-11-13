@@ -1,11 +1,11 @@
 # Create EHR schema in Neon
 import psycopg
 
-from synthetic_ward.config import DATABASE_URL, SCHEMA_SQL
+from synthetic_ward.config import SCHEMA_SQL, database_url
 
 
 def main():
-    with psycopg.connect(DATABASE_URL) as con:
+    with psycopg.connect(database_url()) as con:
         con.execute(SCHEMA_SQL.read_text())
         tables = con.execute(
             "SELECT table_name FROM information_schema.tables "
