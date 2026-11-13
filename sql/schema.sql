@@ -207,3 +207,12 @@ CREATE INDEX IF NOT EXISTS observations_encounter_idx  ON ehr.observations (enco
 CREATE INDEX IF NOT EXISTS procedures_encounter_idx    ON ehr.procedures (encounter);
 CREATE INDEX IF NOT EXISTS immunizations_encounter_idx ON ehr.immunizations (encounter);
 CREATE INDEX IF NOT EXISTS allergies_encounter_idx     ON ehr.allergies (encounter);
+
+-- simulator bookkeeping
+CREATE SCHEMA IF NOT EXISTS sim;
+
+CREATE TABLE IF NOT EXISTS sim.state (
+    id  integer PRIMARY KEY DEFAULT 1 CHECK (id = 1),
+    sim_time timestamptz NOT NULL,
+    updated_at timestamptz NOT NULL DEFAULT now()
+);

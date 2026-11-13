@@ -107,6 +107,14 @@ def main():
         for table in CLINICAL_TABLES:
             n = copy_rows(cur, table, history_events(read_rows(table), finished, cutoff))
             print(f"  {table:<14} {n:>7,}")
+
+        cur.execute(
+            "INSERT INTO sim.state (id, sim_time) VALUES (1, %s) "
+            "ON CONFLICT (id) DO UPDATE SET sim_time = EXCLUDED.sim_time, updated_at = now()",
+            (cutoff,),
+        )
+        print(f"    sim clock reset to {cutoff.isoformat()}")
+        
     print("Committed.")
 
 
